@@ -107,7 +107,6 @@ int main()
             if(curPart==SHOES){ LoadPNG("assets/shoes/shoes0.png", shoesPNG); ApplyFixedColorStyle(shoesPNG, style); player.shoes=style; continue; }
         }
 
-        // 텍스처 생성
         SDL_Texture* hairTexP   = PNGToTexture(ren, hairPNG);
         SDL_Texture* topTexP    = PNGToTexture(ren, topPNG);
         SDL_Texture* bottomTexP = PNGToTexture(ren, bottomPNG);
@@ -117,7 +116,6 @@ int main()
         SDL_RenderClear(ren);
         SDL_RenderCopy(ren, baseTex, NULL, &dstLeft);
 
-        // 단계별로 나타나기
         if(curPart>=HAIR)   SDL_RenderCopy(ren, hairTexP, NULL, &dstLeft);
         if(curPart>=BOTTOM) SDL_RenderCopy(ren, bottomTexP, NULL, &dstLeft);
         if(curPart>=TOP)    SDL_RenderCopy(ren, topTexP, NULL, &dstLeft);

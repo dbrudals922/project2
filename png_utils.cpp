@@ -74,11 +74,11 @@ void ApplyFixedColorStyle(PNGImage& img, int style)
 
             switch(style)
             {
-                case 0: px[0]=255; px[1]=0;   px[2]=0;   break; // Red
-                case 1: px[0]=255; px[1]=255; px[2]=0;   break; // Yellow
-                case 2: px[0]=0;   px[1]=0;   px[2]=255; break; // Blue
-                case 3: px[0]=255; px[1]=0;   px[2]=255; break; // Purple
-                case 4: px[0]=0;   px[1]=255; px[2]=0;   break; // Green
+                case 0: px[0]=255; px[1]=0;   px[2]=0;   break; 
+                case 1: px[0]=255; px[1]=255; px[2]=0;   break; 
+                case 2: px[0]=0;   px[1]=0;   px[2]=255; break; 
+                case 3: px[0]=255; px[1]=0;   px[2]=255; break; 
+                case 4: px[0]=0;   px[1]=255; px[2]=0;   break; 
             }
         }
     }
