@@ -1,20 +1,18 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -O2 -Wall `sdl2-config --cflags`
+CXXFLAGS = -std=c++17 -O2 `sdl2-config --cflags`
 LDFLAGS = `sdl2-config --libs` -lpng
 
-SRC = main.cpp png_utils.cpp
-OBJ = $(SRC:.cpp=.o)
+SRC_COMMON = png_utils.cpp
 
-TARGET = dressup
+all: dressup dressup_hardcore
 
-all: $(TARGET)
+dressup: main.cpp $(SRC_COMMON)
+	$(CXX) $(CXXFLAGS) -o $@ main.cpp $(SRC_COMMON) $(LDFLAGS)
 
-$(TARGET): $(OBJ)
-	$(CXX) $(OBJ) -o $(TARGET) $(LDFLAGS)
-
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+dressup_hardcore: main2.cpp $(SRC_COMMON)
+	$(CXX) $(CXXFLAGS) -o $@ main2.cpp $(SRC_COMMON) $(LDFLAGS)
 
 clean:
-	rm -f $(OBJ) $(TARGET)
+	rm -f dressup dressup_hardcore *.o
 
+.PHONY: all clean

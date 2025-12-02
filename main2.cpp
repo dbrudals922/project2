@@ -6,7 +6,7 @@
 enum Part { HAIR, TOP, BOTTOM, SHOES, DONE };
 
 struct Outfit {
-    int hair, top, bottom, shoes;
+    int hair, top, bottom, shoes, topNum, bottomNum, shoesNum;
 };
 
 void renderOutfit(SDL_Renderer* renderer, SDL_Rect& dst, SDL_Texture* base,
@@ -30,16 +30,20 @@ int main()
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1500, 1200, 0);
     SDL_Renderer* ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
+    Outfit answer = { rand()%4, rand()%5, rand()%5, rand()%5, rand()%4, rand()%4, rand()%2 };
+
     PNGImage basePNG, hairPNG, topPNG, bottomPNG, shoesPNG;
     LoadPNG("assets/base.png", basePNG);
     LoadPNG("assets/hair/hair0.png", hairPNG);
-    LoadPNG("assets/top/top0.png", topPNG);
-    LoadPNG("assets/bottom/bottom0.png", bottomPNG);
-    LoadPNG("assets/shoes/shoes0.png", shoesPNG);
+    LoadPNG("assets/top/top"+std::to_string(answer.topNum)+".png", topPNG);
+    LoadPNG("assets/bottom/bottom"+std::to_string(answer.bottomNum)+".png", bottomPNG);
+    LoadPNG("assets/shoes/shoes"+std::to_string(answer.shoesNum)+".png", shoesPNG);
+    // LoadPNG("assets/top/top0.png", topPNG);
+    // LoadPNG("assets/bottom/bottom0.png", bottomPNG);
+    // LoadPNG("assets/shoes/shoes0.png", shoesPNG);
 
     SDL_Texture* baseTex = PNGToTexture(ren, basePNG);
 
-    Outfit answer = { rand()%4, rand()%5, rand()%5, rand()%5 };
 
     PNGImage hairAns, topAns=topPNG, bottomAns=bottomPNG, shoesAns=shoesPNG;
     LoadPNG("assets/hair/hair"+std::to_string(answer.hair)+".png", hairAns);
@@ -48,7 +52,7 @@ int main()
     ApplyFixedColorStyle(shoesAns, answer.shoes);
 
     SDL_Rect dstLeft = {0, 100, basePNG.width, basePNG.height};
-    SDL_Rect dstRight = {500,100,basePNG.width, basePNG.height};
+    SDL_Rect dstRight = {500, 100, basePNG.width, basePNG.height};
 
     SDL_SetRenderDrawColor(ren,255,255,255,255);
     SDL_RenderClear(ren);
@@ -61,9 +65,7 @@ int main()
                   PNGToTexture(ren, shoesAns));
     SDL_Delay(2000);
 
-    
-
-    Outfit player = {0,0,0,0};
+    Outfit player = {0,0,0,0,0,0,0};
     Part curPart = HAIR;
     Uint32 lastChange = SDL_GetTicks();
     bool spaceDown = false;
@@ -96,15 +98,15 @@ int main()
         }
 
         Uint32 now = SDL_GetTicks();
-        if(curPart!=DONE && now-lastChange>400)
+        if(curPart!=DONE && now-lastChange>350)
         {
             lastChange = now;
             int style = rand()%5;
 
-            if(curPart==HAIR){ LoadPNG("assets/hair/hair"+std::to_string(style%4)+".png", hairPNG); player.hair=style; continue; }
-            if(curPart==TOP){ LoadPNG("assets/top/top0.png", topPNG); ApplyFixedColorStyle(topPNG, style); player.top=style; continue; }
-            if(curPart==BOTTOM){ LoadPNG("assets/bottom/bottom0.png", bottomPNG); ApplyFixedColorStyle(bottomPNG, style); player.bottom=style; continue; }
-            if(curPart==SHOES){ LoadPNG("assets/shoes/shoes0.png", shoesPNG); ApplyFixedColorStyle(shoesPNG, style); player.shoes=style; continue; }
+            if(curPart==HAIR){ LoadPNG("assets/hair/hair"+std::to_string(rand()%4)+".png", hairPNG); player.hair=style; continue; }
+            if(curPart==TOP){ LoadPNG("assets/top/top"+std::to_string(rand()%4)+".png", topPNG); ApplyFixedColorStyle(topPNG, style); player.top=style; continue; }
+            if(curPart==BOTTOM){ LoadPNG("assets/bottom/bottom"+std::to_string(rand()%4)+".png", bottomPNG); ApplyFixedColorStyle(bottomPNG, style); player.bottom=style; continue; }
+            if(curPart==SHOES){ LoadPNG("assets/shoes/shoes"+std::to_string(rand()%2)+".png", shoesPNG); ApplyFixedColorStyle(shoesPNG, style); player.shoes=style; continue; }
         }
 
         // 텍스처 생성
@@ -135,7 +137,9 @@ int main()
             SDL_Delay(200);
 
             bool success = (player.hair==answer.hair && player.top==answer.top &&
-                            player.bottom==answer.bottom && player.shoes==answer.shoes);
+                            player.bottom==answer.bottom && player.shoes==answer.shoes &&
+                            player.topNum==answer.topNum && player.bottomNum==answer.bottomNum &&
+                            player.shoesNum==answer.shoesNum);
 
             Uint8 r = success ? 144 : 255;
             Uint8 g = success ? 238 : 128; 
